@@ -1,4 +1,3 @@
-import { draw } from "..";
 import * as audioModule from "../audio";
 import { COLOR } from "../constants";
 
