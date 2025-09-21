@@ -41,12 +41,12 @@ export const setup = () => {
 };
 
 export const draw = () => {
-  const { fft } = audioModule;
+  const { fft, analyzer } = audioModule;
 
   p.background(COLOR.black);
 
-  // fftが初期化されているかチェック
   if (fft) {
+    // 周波数スペクトルデータ（0〜255の配列）
     let spectrum = fft.analyze();
     console.log("Spectrum length:", spectrum.length);
     console.log("First 10 values:", spectrum.slice(0, 10));
@@ -55,6 +55,10 @@ export const draw = () => {
     let waveform = fft.waveform();
     console.log("Waveform length:", waveform.length);
     console.log("First 10 values:", waveform.slice(0, 10));
+
+    // 現在の音量レベル（0.0〜1.0）
+    analyzer.getLevel();
+    console.log("Current Level:", analyzer.getLevel());
   }
 };
 
