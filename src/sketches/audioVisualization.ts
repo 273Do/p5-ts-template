@@ -1,3 +1,4 @@
+import { draw } from "..";
 import * as audioModule from "../audio";
 import { COLOR } from "../constants";
 
@@ -24,13 +25,14 @@ export const drawVisualization = () => {
 
     // 現在の音量レベル（0.0〜1.0）
     // Current volume level (0.0 to 1.0)
-    analyzer.getLevel();
+    let volume = analyzer.getLevel();
     // console.log("Current Level:", analyzer.getLevel());
 
     // ここに具体的なコードを追加
     // Add specific code here
     drawSpectrum(spectrum);
     drawWaveform(waveform);
+    drawLevel(volume);
   }
 };
 
@@ -60,4 +62,14 @@ const drawWaveform = (waveform: number[]) => {
     p.vertex(x, y);
   }
   p.endShape();
+};
+
+/**
+ * レベル表示(display level)
+ */
+const drawLevel = (level: number) => {
+  const h = p.map(level, 0, 1, 0, p.height);
+  p.fill(255, 100, 100);
+  p.noStroke();
+  p.rect(p.width - 50, p.height - h, 30, h);
 };
