@@ -21,6 +21,9 @@ export const setup = () => {
   p.pixelDensity(1);
   p.frameRate(SCREEN.frameRate);
 
+  // オーディオ解析器を初期化
+  audioModule.initializeAudio();
+
   // オーディオファイル入力のセットアップ
   audioModule.setupAudioInput();
 
@@ -42,14 +45,17 @@ export const draw = () => {
 
   p.background(COLOR.black);
 
-  let spectrum = fft.analyze();
-  console.log("Spectrum length:", spectrum.length); // 256個
-  console.log("First 10 values:", spectrum.slice(0, 10));
+  // fftが初期化されているかチェック
+  if (fft) {
+    let spectrum = fft.analyze();
+    console.log("Spectrum length:", spectrum.length);
+    console.log("First 10 values:", spectrum.slice(0, 10));
 
-  // 波形データ（-1.0〜+1.0の配列）
-  let waveform = fft.waveform();
-  console.log("Waveform length:", waveform.length); // 1024個
-  console.log("First 10 values:", waveform.slice(0, 10));
+    // 波形データ（-1.0〜+1.0の配列）
+    let waveform = fft.waveform();
+    console.log("Waveform length:", waveform.length);
+    console.log("First 10 values:", waveform.slice(0, 10));
+  }
 };
 
 export const playOrPause = () => {
