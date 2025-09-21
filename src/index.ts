@@ -1,5 +1,7 @@
 import * as audioModule from "./audio";
-import { COLOR, SCREEN } from "./constants";
+import { SCREEN } from "./constants";
+import { setupControls } from "./controls";
+import { drawVisualization } from "./sketches/audioVisualization";
 
 export const preload = () => {
   audioModule.preload();
@@ -15,59 +17,29 @@ export const resize = () => {
 };
 
 export const setup = () => {
-  const { audio } = audioModule;
-
   p.createCanvas(SCREEN.width, SCREEN.height);
   p.pixelDensity(1);
   p.frameRate(SCREEN.frameRate);
 
   // オーディオ解析器を初期化
+  // Initialize audio analyzers
   audioModule.initializeAudio();
 
   // オーディオファイル入力のセットアップ
+  // Set up audio file input
   audioModule.setupAudioInput();
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key === " ") {
-      playOrPause();
-    } else if (e.key === "ArrowLeft") {
-      audio.jump(audio.currentTime() - 2);
-    } else if (e.key === "ArrowRight") {
-      audio.jump(audio.currentTime() + 2);
-    }
-  });
+  // オーディオコントロールのセットアップ
+  // Set up audio controls
+  setupControls();
 
+  // 初期のキャンバスサイズ調整
+  // Initial canvas size adjustment
   resize();
 };
 
 export const draw = () => {
-  const { fft, analyzer } = audioModule;
-
-  p.background(COLOR.black);
-
-  if (fft) {
-    // 周波数スペクトルデータ（0〜255の配列）
-    let spectrum = fft.analyze();
-    console.log("Spectrum length:", spectrum.length);
-    console.log("First 10 values:", spectrum.slice(0, 10));
-
-    // 波形データ（-1.0〜+1.0の配列）
-    let waveform = fft.waveform();
-    console.log("Waveform length:", waveform.length);
-    console.log("First 10 values:", waveform.slice(0, 10));
-
-    // 現在の音量レベル（0.0〜1.0）
-    analyzer.getLevel();
-    console.log("Current Level:", analyzer.getLevel());
-  }
-};
-
-export const playOrPause = () => {
-  const { audio } = audioModule;
-
-  if (audio.isPlaying()) {
-    audio.pause();
-  } else {
-    audio.play();
-  }
+  // 指定したスケッチの描画
+  // Draw the specified sketch
+  drawVisualization();
 };
