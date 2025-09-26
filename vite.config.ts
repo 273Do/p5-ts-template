@@ -1,5 +1,5 @@
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  base: "/p5-template/",
+  base: "/p5-ts-template/",
 });
