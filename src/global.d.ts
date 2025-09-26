@@ -4,6 +4,10 @@ import Item from "./item";
 
 declare global {
   const p: p5;
+  interface Window {
+    p: p5;
+    p5: typeof p5;
+  }
 }
 
 declare module "p5" {
